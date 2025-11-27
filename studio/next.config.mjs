@@ -15,6 +15,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Ensure Next.js reads tsconfig paths
+  experimental: {
+    // This might help with path resolution
+  },
   webpack: (config, { isServer }) => {
     try {
       if (!isServer) {
@@ -27,7 +31,7 @@ const nextConfig = {
       // Force @ alias to resolve correctly - must be absolute path
       const studioPath = path.resolve(__dirname)
       
-      // Override any existing alias
+      // Override any existing alias - use both @ and @/ patterns
       if (!config.resolve) {
         config.resolve = {}
       }
@@ -35,20 +39,22 @@ const nextConfig = {
         config.resolve.alias = {}
       }
       
-      config.resolve.alias['@'] = studioPath
-      
-      // Ensure proper module resolution
-      if (!config.resolve.modules) {
-        config.resolve.modules = []
+      // Set alias for @ - must override any existing
+      config.resolve.alias = {
+        ...(config.resolve.alias || {}),
+        '@': studioPath,
       }
+      
+      // Ensure proper module resolution - studio directory first
       config.resolve.modules = [
         studioPath,
         path.join(studioPath, 'node_modules'),
-        ...config.resolve.modules.filter(m => !m.includes(studioPath)),
+        ...(config.resolve.modules || []).filter(m => typeof m === 'string' && !m.includes(studioPath)),
         'node_modules',
       ]
       
       console.log('[Next.js Config] @ alias set to:', studioPath)
+      console.log('[Next.js Config] Full alias config:', JSON.stringify(config.resolve.alias, null, 2))
       console.log('[Next.js Config] Resolve modules:', config.resolve.modules)
     } catch (error) {
       console.error('[Next.js Config] Webpack config error:', error)
