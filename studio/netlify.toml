@@ -1,11 +1,10 @@
 [build]
   base = "studio"
-  command = "npm run build"
-  publish = "studio/.next"
+  command = "npm ci && npm run build"
+  publish = ".netlify/build"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
 [build.environment]
   NODE_VERSION = "22"
-
