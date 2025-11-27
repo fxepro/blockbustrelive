@@ -1,8 +1,11 @@
 [build]
   base = "studio"
-  command = "npm ci && npm run build"
-  publish = ".next"
+  command = "npm run build"
+  publish = "studio/.next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 [build.environment]
-  NODE_VERSION = "18"
-  NPM_FLAGS = "--legacy-peer-deps"
+  NODE_VERSION = "22"
+

@@ -52,10 +52,6 @@ const nextConfig = {
         ...(config.resolve.modules || []).filter(m => typeof m === 'string' && !m.includes(studioPath)),
         'node_modules',
       ]
-      
-      console.log('[Next.js Config] @ alias set to:', studioPath)
-      console.log('[Next.js Config] Full alias config:', JSON.stringify(config.resolve.alias, null, 2))
-      console.log('[Next.js Config] Resolve modules:', config.resolve.modules)
     } catch (error) {
       console.error('[Next.js Config] Webpack config error:', error)
     }
