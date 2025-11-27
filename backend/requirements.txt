@@ -1,0 +1,32 @@
+# Core Django and REST Framework
+Django==4.2.7
+djangorestframework==3.14.0
+django-cors-headers==4.3.1
+
+# Authentication & Security
+djangorestframework-simplejwt==5.3.0
+django-allauth==0.57.0
+cryptography==41.0.7
+
+# Database
+psycopg2-binary==2.9.9
+django-environ==0.11.2
+
+# Validation & Serialization
+drf-yasg==1.21.7
+django-filter==23.3
+
+# Utilities
+Pillow==10.1.0
+celery==5.3.4
+redis==5.0.1
+django-redis==5.4.0
+
+# Development & Testing
+django-debug-toolbar==4.2.0
+pytest-django==4.7.0
+factory-boy==3.3.0
+
+# Monitoring & Logging
+sentry-sdk[django]==1.38.0
+

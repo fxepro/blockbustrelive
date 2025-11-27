@@ -1,0 +1,68 @@
+# BlockBustre RBAC Permissions
+
+This document outlines the 16 permissions used in the BlockBustre Role-Based Access Control (RBAC) system.
+
+## Overview
+
+The RBAC system uses Django's standard CRUD (Create, Read, Update, Delete) permission pattern with `add_`, `view_`, `change_`, and `delete_` prefixes for each model.
+
+## 16 Permissions by Category
+
+### User Management (4 permissions)
+
+- **`add_user`** - Create new users
+- **`change_user`** - Edit existing users
+- **`delete_user`** - Delete users
+- **`view_user`** - View user information
+
+### Role Management (4 permissions)
+
+- **`add_role`** - Create new roles
+- **`change_role`** - Edit existing roles
+- **`delete_role`** - Delete roles
+- **`view_role`** - View role information
+
+### Smart Contract Management (4 permissions)
+
+- **`add_smartcontract`** - Create new smart contracts
+- **`change_smartcontract`** - Edit existing smart contracts
+- **`delete_smartcontract`** - Delete smart contracts
+- **`view_smartcontract`** - View smart contract information
+
+### Transaction Management (4 permissions)
+
+- **`add_transaction`** - Create new transactions
+- **`change_transaction`** - Edit existing transactions
+- **`delete_transaction`** - Delete transactions
+- **`view_transaction`** - View transaction information
+
+## Permission Distribution by Role
+
+### Admin Role
+- **Permissions**: All 16 permissions (full access)
+- **Description**: Complete system access with all CRUD operations
+
+### Manager Role
+- **Permissions**: 6 permissions
+  - `view_user`, `change_user`
+  - `view_smartcontract`, `change_smartcontract`
+  - `view_transaction`, `change_transaction`
+- **Description**: Management access with limited admin capabilities
+
+### User Role
+- **Permissions**: 4 permissions
+  - `view_smartcontract`, `add_smartcontract`
+  - `view_transaction`, `add_transaction`
+- **Description**: Standard user access for creating and viewing content
+
+### Guest Role
+- **Permissions**: 1 permission
+  - `view_smartcontract`
+- **Description**: Limited guest access for viewing contracts only
+
+## Implementation Notes
+
+- Permissions are automatically created by Django when models are migrated
+- Roles can be managed through the Django admin interface
+- Permission checks can be performed in views using decorators or mixins
+- Frontend can check user permissions via API calls to determine UI visibility
