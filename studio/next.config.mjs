@@ -16,33 +16,43 @@ const nextConfig = {
     unoptimized: true,
   },
   webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
+    try {
+      if (!isServer) {
+        config.resolve.fallback = {
+          ...config.resolve.fallback,
+          fs: false,
+        }
       }
+      
+      // Force @ alias to resolve correctly - must be absolute path
+      const studioPath = path.resolve(__dirname)
+      
+      // Override any existing alias
+      if (!config.resolve) {
+        config.resolve = {}
+      }
+      if (!config.resolve.alias) {
+        config.resolve.alias = {}
+      }
+      
+      config.resolve.alias['@'] = studioPath
+      
+      // Ensure proper module resolution
+      if (!config.resolve.modules) {
+        config.resolve.modules = []
+      }
+      config.resolve.modules = [
+        studioPath,
+        path.join(studioPath, 'node_modules'),
+        ...config.resolve.modules.filter(m => !m.includes(studioPath)),
+        'node_modules',
+      ]
+      
+      console.log('[Next.js Config] @ alias set to:', studioPath)
+      console.log('[Next.js Config] Resolve modules:', config.resolve.modules)
+    } catch (error) {
+      console.error('[Next.js Config] Webpack config error:', error)
     }
-    
-    // Ensure @ alias resolves correctly
-    const alias = config.resolve.alias || {}
-    alias['@'] = path.resolve(__dirname)
-    config.resolve.alias = alias
-    
-    // Ensure proper module resolution
-    config.resolve.modules = [
-      path.resolve(__dirname, 'node_modules'),
-      'node_modules',
-    ]
-    
-    // Ensure extensions are resolved
-    config.resolve.extensions = [
-      '.js',
-      '.jsx',
-      '.ts',
-      '.tsx',
-      '.json',
-      ...(config.resolve.extensions || []),
-    ]
     
     return config
   },
