@@ -45,13 +45,11 @@ const nextConfig = {
         '@': studioPath,
       }
       
-      // Ensure proper module resolution - studio directory first
-      config.resolve.modules = [
-        studioPath,
-        path.join(studioPath, 'node_modules'),
-        ...(config.resolve.modules || []).filter(m => typeof m === 'string' && !m.includes(studioPath)),
-        'node_modules',
-      ]
+      // Preserve existing modules array but ensure studio path is included
+      const existingModules = config.resolve.modules || []
+      if (!existingModules.includes(studioPath)) {
+        config.resolve.modules = [studioPath, ...existingModules]
+      }
     } catch (error) {
       console.error('[Next.js Config] Webpack config error:', error)
     }
