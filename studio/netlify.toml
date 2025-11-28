@@ -1,0 +1,12 @@
+# ⚠ NOTE: This file is ignored unless you configure monorepo overrides.
+# It exists only for local clarity.
+
+[build]
+  command = "npm install && npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[build.environment]
+  NODE_VERSION = "22"
